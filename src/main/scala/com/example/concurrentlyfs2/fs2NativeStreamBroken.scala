@@ -2,7 +2,6 @@ package com.example.concurrentlyfs2
 
 import cats.effect.IO
 import fs2.{StreamApp, Stream}
-
 import scala.concurrent.ExecutionContext.Implicits.global
 
 object fs2NativeStreamBroken extends StreamApp[IO] {
@@ -15,6 +14,5 @@ object fs2NativeStreamBroken extends StreamApp[IO] {
   def stream(args: List[String], requestShutdown: IO[Unit]) =
     bracketed("Stream1")
     .concurrently(bracketed("Stream2"))
-
 
 }
