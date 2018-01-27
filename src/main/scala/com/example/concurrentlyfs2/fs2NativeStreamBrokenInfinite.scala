@@ -9,8 +9,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 object fs2NativeStreamBrokenInfinite extends StreamApp[IO] {
 
   def  serverBehaviorWeWant(string: String, terminated: Signal[IO, Boolean]): Stream[IO, StreamApp.ExitCode] = Stream.bracket(IO(println(s"Started $string")))(
-    using => Stream.eval(terminated.discrete.takeWhile(_ == false).compile.drain) >>
-      Stream.emit(StreamApp.ExitCode(0)).covary[IO] ,
+    using => terminated.discrete.takeWhile(_ == false).drain ++ Stream.emit(StreamApp.ExitCode(0)).covary[IO] ,
     release => IO(println(s"Release $string"))
   )
 
